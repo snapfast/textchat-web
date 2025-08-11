@@ -7,6 +7,8 @@ import { apiService } from '@/lib/api'
 import { Chat, Message } from '@/types'
 import { useAuth } from '@/context/AuthContext'
 import { useWebSocket } from '@/hooks/useWebSocket'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 
 export default function ChatPage() {
   const [chat, setChat] = useState<Chat | null>(null)
@@ -259,21 +261,20 @@ export default function ChatPage() {
         {/* Message Input */}
         <form onSubmit={handleSendMessage} className="bg-white border-t border-gray-200 p-4">
           <div className="flex space-x-3">
-            <input
+            <Input
               type="text"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               placeholder="Type a message..."
-              className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="flex-1"
               disabled={sending}
             />
-            <button
+            <Button
               type="submit"
               disabled={!newMessage.trim() || sending}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {sending ? 'Sending...' : 'Send'}
-            </button>
+            </Button>
           </div>
         </form>
       </div>

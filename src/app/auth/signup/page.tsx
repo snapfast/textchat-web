@@ -3,6 +3,9 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
 
 export default function SignupPage() {
   const [loading, setLoading] = useState(false)
@@ -105,10 +108,10 @@ export default function SignupPage() {
         <form onSubmit={handleSignup} className="mt-8 space-y-6">
           <div className="space-y-4">
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+              <Label htmlFor="username">
                 Username
-              </label>
-              <input
+              </Label>
+              <Input
                 id="username"
                 type="text"
                 required
@@ -116,81 +119,76 @@ export default function SignupPage() {
                 maxLength={50}
                 value={signupForm.username}
                 onChange={(e) => setSignupForm({...signupForm, username: e.target.value})}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Choose a username (3-50 characters)"
               />
             </div>
             
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <Label htmlFor="email">
                 Email
-              </label>
-              <input
+              </Label>
+              <Input
                 id="email"
                 type="email"
                 required
                 value={signupForm.email}
                 onChange={(e) => setSignupForm({...signupForm, email: e.target.value})}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter your email address"
               />
             </div>
             
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
+              <Label htmlFor="fullName">
                 Full Name
-              </label>
-              <input
+              </Label>
+              <Input
                 id="fullName"
                 type="text"
                 required
                 value={signupForm.fullName}
                 onChange={(e) => setSignupForm({...signupForm, fullName: e.target.value})}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter your full name"
               />
             </div>
             
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <Label htmlFor="password">
                 Password
-              </label>
-              <input
+              </Label>
+              <Input
                 id="password"
                 type="password"
                 required
                 minLength={6}
                 value={signupForm.password}
                 onChange={(e) => setSignupForm({...signupForm, password: e.target.value})}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter password (minimum 6 characters)"
               />
             </div>
             
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+              <Label htmlFor="confirmPassword">
                 Confirm Password
-              </label>
-              <input
+              </Label>
+              <Input
                 id="confirmPassword"
                 type="password"
                 required
                 value={signupForm.confirmPassword}
                 onChange={(e) => setSignupForm({...signupForm, confirmPassword: e.target.value})}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Confirm your password"
               />
             </div>
           </div>
           
           <div>
-            <button
+            <Button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full"
             >
               {loading ? 'Creating account...' : 'Sign up'}
-            </button>
+            </Button>
           </div>
         </form>
       </div>

@@ -6,6 +6,7 @@ import { ProtectedRoute } from '@/components/ProtectedRoute'
 import { apiService } from '@/lib/api'
 import { Chat } from '@/types'
 import { useAuth } from '@/context/AuthContext'
+import { Button } from '@/components/ui/button'
 
 export default function ChatsPage() {
   const [chats, setChats] = useState<Chat[]>([])
@@ -68,12 +69,11 @@ export default function ChatsPage() {
       <div className="container mx-auto p-4 max-w-4xl">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold">Messages</h1>
-          <button 
+          <Button 
             onClick={() => router.push('/')}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
             New Chat
-          </button>
+          </Button>
         </div>
         
         {loading && (
@@ -138,12 +138,12 @@ export default function ChatsPage() {
           <div className="text-center py-12">
             <div className="text-gray-400 text-lg mb-2">No chats yet</div>
             <p className="text-gray-500">Start a conversation with someone!</p>
-            <button 
+            <Button 
               onClick={() => router.push('/')}
-              className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              className="mt-4"
             >
               Discover People
-            </button>
+            </Button>
           </div>
         )}
       </div>

@@ -5,6 +5,10 @@ import { ProtectedRoute } from '@/components/ProtectedRoute'
 import { apiService } from '@/lib/api'
 import { User } from '@/types'
 import { useAuth } from '@/context/AuthContext'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false)
@@ -170,13 +174,12 @@ export default function ProfilePage() {
                   
                   <div className="space-y-3">
                     <div>
-                      <label className="text-sm font-medium text-gray-500">Full Name</label>
+                      <Label className="text-sm font-medium text-muted-foreground">Full Name</Label>
                       {isEditing ? (
-                        <input 
+                        <Input 
                           type="text" 
                           value={editForm.full_name}
                           onChange={(e) => setEditForm({...editForm, full_name: e.target.value})}
-                          className="w-full mt-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         />
                       ) : (
                         <p className="text-gray-900">{profile.full_name}</p>
@@ -184,12 +187,12 @@ export default function ProfilePage() {
                     </div>
                     
                     <div>
-                      <label className="text-sm font-medium text-gray-500">Username</label>
+                      <Label className="text-sm font-medium text-muted-foreground">Username</Label>
                       <p className="text-gray-900">@{profile.username}</p>
                     </div>
                     
                     <div>
-                      <label className="text-sm font-medium text-gray-500">Email</label>
+                      <Label className="text-sm font-medium text-muted-foreground">Email</Label>
                       <p className="text-gray-900">{profile.email}</p>
                     </div>
                   </div>
@@ -200,12 +203,11 @@ export default function ProfilePage() {
                 <div className="border rounded-lg p-4">
                   <h3 className="font-semibold text-gray-900 mb-2">About</h3>
                   {isEditing ? (
-                    <textarea 
+                    <Textarea 
                       value={editForm.bio}
                       onChange={(e) => setEditForm({...editForm, bio: e.target.value})}
                       rows={4}
                       placeholder="Tell others about yourself..."
-                      className="w-full mt-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     />
                   ) : (
                     <p className="text-gray-600">{profile.bio || "No bio yet"}</p>
@@ -221,20 +223,19 @@ export default function ProfilePage() {
             
             {isEditing && (
               <div className="flex justify-end space-x-3 pt-4 border-t">
-                <button 
+                <Button 
                   onClick={handleCancel}
                   disabled={saving}
-                  className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+                  variant="outline"
                 >
                   Cancel
-                </button>
-                <button 
+                </Button>
+                <Button 
                   onClick={handleSave}
                   disabled={saving}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
                 >
                   {saving ? 'Saving...' : 'Save Changes'}
-                </button>
+                </Button>
               </div>
             )}
           </div>

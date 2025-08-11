@@ -7,6 +7,7 @@ import { UserSearch } from '@/components/UserSearch'
 import { apiService } from '@/lib/api'
 import { User } from '@/types'
 import { useAuth } from '@/context/AuthContext'
+import { Button } from '@/components/ui/button'
 
 export default function Home() {
   const [users, setUsers] = useState<User[]>([])
@@ -118,18 +119,18 @@ export default function Home() {
               </div>
               
               <div className="flex space-x-2">
-                <button 
+                <Button 
                   onClick={() => handleMessage(user.username)}
-                  className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  className="flex-1"
                 >
                   Message
-                </button>
-                <button 
+                </Button>
+                <Button 
                   onClick={() => router.push(`/profile/${user.username}`)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  variant="outline"
                 >
                   View Profile
-                </button>
+                </Button>
               </div>
             </div>
           ))}

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { apiService } from '@/lib/api'
 import { User } from '@/types'
 import { useAuth } from '@/context/AuthContext'
+import { Input } from '@/components/ui/input'
 
 interface UserSearchProps {
   onUserSelect: (user: User) => void
@@ -74,12 +75,12 @@ export function UserSearch({ onUserSelect, placeholder = "Search users..." }: Us
   return (
     <div ref={searchRef} className="relative">
       <div className="relative">
-        <input
+        <Input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder}
-          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full pl-10 pr-4"
         />
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
