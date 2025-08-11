@@ -49,8 +49,8 @@ export default function SignupPage() {
         password: '[HIDDEN]'
       })
       
-      // Try direct fetch first for debugging
-      const response = await fetch('http://35.188.51.235/api/auth/register', {
+      // Use local API route to avoid mixed content issues
+      const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
