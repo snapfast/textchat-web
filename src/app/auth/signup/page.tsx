@@ -42,12 +42,36 @@ export default function SignupPage() {
     }
     
     try {
-      await apiService.register({
+      console.log('Starting registration with data:', {
         username: signupForm.username,
         email: signupForm.email,
         full_name: signupForm.fullName,
-        password: signupForm.password
+        password: '[HIDDEN]'
       })
+      
+      // Try direct fetch first for debugging
+      const response = await fetch('http://35.188.51.235/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: signupForm.username,
+          email: signupForm.email,
+          full_name: signupForm.fullName,
+          password: signupForm.password
+        })
+      })
+      
+      console.log('Response status:', response.status)
+      console.log('Response ok:', response.ok)
+      
+      const data = await response.json()
+      console.log('Response data:', data)
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${data.error || 'Registration failed'}`)
+      }
       
       // Show success message and redirect to login after 2 seconds
       setSuccess('Registration successful! Redirecting to login page...')
@@ -58,8 +82,12 @@ export default function SignupPage() {
       }, 2000)
       
     } catch (err: unknown) {
-      console.error('Signup error:', err)
-      setError(`DEBUG: ${err instanceof Error ? err.message : JSON.stringify(err)}`)
+      console.error('Signup error details:', err)
+      if (err instanceof TypeError && err.message.includes('fetch')) {
+        setError(`DEBUG: Network error - ${err.message}. Check console for details.`)
+      } else {
+        setError(`DEBUG: ${err instanceof Error ? err.message : JSON.stringify(err)}`)
+      }
     } finally {
       setLoading(false)
     }
