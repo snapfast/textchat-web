@@ -49,8 +49,8 @@ export default function SignupPage() {
         password: '[HIDDEN]'
       })
       
-      // Use local API route to avoid mixed content issues
-      const response = await fetch('/api/auth/register', {
+      // Use domain API directly
+      const response = await fetch('https://api.pokee.in/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

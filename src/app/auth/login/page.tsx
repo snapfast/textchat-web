@@ -26,7 +26,7 @@ export default function LoginPage() {
     setError('')
     
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch('https://api.pokee.in/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

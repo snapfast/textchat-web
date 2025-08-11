@@ -1,7 +1,7 @@
 import { LoginRequest, RegisterRequest, AuthResponse, User, Chat, Message, PaginatedResponse } from '@/types'
 import { AuthManager } from './auth'
 
-const API_BASE = 'http://35.188.51.235/api'
+const API_BASE = 'https://api.pokee.in/api'
 
 class ApiService {
   private getAuthHeaders(): HeadersInit {

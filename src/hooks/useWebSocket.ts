@@ -26,8 +26,8 @@ export function useWebSocket(chatId?: string): UseWebSocketReturn {
     const token = localStorage.getItem('token')
     if (!token) return
 
-    // WebSocket URL - assuming the API provides WebSocket endpoints
-    const wsUrl = `ws://35.188.51.235/ws?token=${encodeURIComponent(token)}&chat_id=${chatId}`
+    // WebSocket URL - using secure WebSocket with domain
+    const wsUrl = `wss://api.pokee.in/ws?token=${encodeURIComponent(token)}&chat_id=${chatId}`
 
     try {
       ws.current = new WebSocket(wsUrl)
