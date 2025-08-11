@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
+import { apiService } from '@/lib/api'
 
 export default function SignupPage() {
   const [loading, setLoading] = useState(false)
@@ -41,27 +42,12 @@ export default function SignupPage() {
     }
     
     try {
-      const response = await fetch('http://35.188.51.235/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: signupForm.username,
-          email: signupForm.email,
-          full_name: signupForm.fullName,
-          password: signupForm.password
-        })
+      await apiService.register({
+        username: signupForm.username,
+        email: signupForm.email,
+        full_name: signupForm.fullName,
+        password: signupForm.password
       })
-      
-      const data = await response.json()
-      
-      if (!response.ok) {
-        if (response.status === 409) {
-          throw new Error('Username or email already exists. Please choose a different one.')
-        }
-        throw new Error(data.error || 'Registration failed')
-      }
       
       // Show success message and redirect to login after 2 seconds
       setSuccess('Registration successful! Redirecting to login page...')
@@ -72,7 +58,8 @@ export default function SignupPage() {
       }, 2000)
       
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'An error occurred')
+      console.error('Signup error:', err)
+      setError(`DEBUG: ${err instanceof Error ? err.message : JSON.stringify(err)}`)
     } finally {
       setLoading(false)
     }
