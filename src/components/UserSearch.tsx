@@ -126,7 +126,7 @@ export function UserSearch({ onUserSelect, placeholder = "Search users..." }: Us
             ))
           ) : query.trim().length >= 2 && !loading ? (
             <div className="px-4 py-3 text-sm text-gray-500 text-center">
-              No users found for "{query}"
+              No users found for &quot;{query}&quot;
             </div>
           ) : null}
         </div>

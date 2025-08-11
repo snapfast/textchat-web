@@ -48,8 +48,8 @@ export default function LoginPage() {
       // Redirect to home
       router.push('/')
       
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
       setLoading(false)
     }
@@ -63,7 +63,7 @@ export default function LoginPage() {
             Sign in to your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <Link href="/auth/signup" className="font-medium text-blue-600 hover:text-blue-500">
               Sign up here
             </Link>

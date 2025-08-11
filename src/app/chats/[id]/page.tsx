@@ -21,7 +21,7 @@ export default function ChatPage() {
   const { user: currentUser } = useAuth()
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const chatId = params.id as string
-  const { sendMessage: sendWebSocketMessage, isConnected, lastMessage } = useWebSocket(chatId)
+  const { lastMessage } = useWebSocket(chatId)
 
   useEffect(() => {
     const fetchChatData = async () => {
@@ -40,8 +40,8 @@ export default function ChatPage() {
         
         setChat(currentChat)
         setMessages(messagesData.data || [])
-      } catch (err: any) {
-        setError(err.message)
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'An error occurred')
       } finally {
         setLoading(false)
       }
@@ -62,12 +62,12 @@ export default function ChatPage() {
       if (lastMessage.type === 'new_message') {
         const newMessage = lastMessage.data as Message
         // Only add message if it's not from current user and not already in messages
-        if (newMessage.sender_id !== currentUser?.id && 
+        if (newMessage.sender_id !== String(currentUser?.id) && 
             !messages.find(m => m.id === newMessage.id)) {
           setMessages(prev => [...prev, newMessage])
         }
       } else if (lastMessage.type === 'message_deleted') {
-        const messageId = lastMessage.data.message_id
+        const messageId = (lastMessage.data as { message_id: string }).message_id
         setMessages(prev => prev.filter(m => m.id !== messageId))
       } else if (lastMessage.type === 'message_edited') {
         const editedMessage = lastMessage.data as Message
@@ -93,8 +93,8 @@ export default function ChatPage() {
     try {
       const sentMessage = await apiService.sendMessage(chatId, messageContent)
       setMessages(prev => [...prev, sentMessage])
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred')
       setNewMessage(messageContent) // Restore message if failed
     } finally {
       setSending(false)
@@ -229,15 +229,15 @@ export default function ChatPage() {
                 </div>
               )}
               
-              <div className={`flex ${message.sender_id === currentUser?.id ? 'justify-end' : 'justify-start'}`}>
+              <div className={`flex ${message.sender_id === String(currentUser?.id) ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                  message.sender_id === currentUser?.id
+                  message.sender_id === String(currentUser?.id)
                     ? 'bg-blue-600 text-white'
                     : 'bg-white text-gray-900 shadow-sm'
                 }`}>
                   <p className="text-sm">{message.content}</p>
                   <p className={`text-xs mt-1 ${
-                    message.sender_id === currentUser?.id ? 'text-blue-100' : 'text-gray-500'
+                    message.sender_id === String(currentUser?.id) ? 'text-blue-100' : 'text-gray-500'
                   }`}>
                     {formatMessageTime(message.created_at)}
                     {message.edited && ' (edited)'}

@@ -30,8 +30,8 @@ export default function ProfilePage() {
           full_name: userProfile.full_name,
           bio: userProfile.bio || ''
         })
-      } catch (err: any) {
-        setError(err.message)
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'An error occurred')
       } finally {
         setLoading(false)
       }
@@ -64,8 +64,8 @@ export default function ProfilePage() {
       }
       
       setTimeout(() => setSuccess(''), 3000)
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
       setSaving(false)
     }

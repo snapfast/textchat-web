@@ -5,11 +5,11 @@ import { useAuth } from '@/context/AuthContext'
 
 interface WebSocketMessage {
   type: string
-  data: any
+  data: unknown
 }
 
 interface UseWebSocketReturn {
-  sendMessage: (message: any) => void
+  sendMessage: (message: unknown) => void
   isConnected: boolean
   lastMessage: WebSocketMessage | null
 }
@@ -66,7 +66,7 @@ export function useWebSocket(chatId?: string): UseWebSocketReturn {
     }
   }, [chatId, isAuthenticated, user])
 
-  const sendMessage = (message: any) => {
+  const sendMessage = (message: unknown) => {
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
       ws.current.send(JSON.stringify(message))
     } else {

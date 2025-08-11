@@ -22,8 +22,8 @@ export default function Home() {
         // Filter out current user
         const otherUsers = fetchedUsers.filter(user => user.id !== currentUser?.id)
         setUsers(otherUsers)
-      } catch (err: any) {
-        setError(err.message)
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'An error occurred')
       } finally {
         setLoading(false)
       }
@@ -65,8 +65,8 @@ export default function Home() {
     try {
       const chat = await apiService.createChat(username)
       router.push(`/chats/${chat.id}`)
-    } catch (err: any) {
-      console.error('Failed to create chat:', err.message)
+    } catch (err: unknown) {
+      console.error('Failed to create chat:', err instanceof Error ? err.message : 'Unknown error')
     }
   }
 
