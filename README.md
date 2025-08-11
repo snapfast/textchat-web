@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## TextChat Web Application
+
+A modern real-time chat application built with Next.js 15, TypeScript, and Tailwind CSS.
+
 ## Getting Started
 
 First, run the development server:
