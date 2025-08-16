@@ -14,8 +14,8 @@ export function Navigation() {
     { name: 'Profile', href: '/profile' }
   ]
 
-  // Don't show navigation on auth pages
-  if (pathname.startsWith('/auth')) {
+  // Don't show navigation on auth pages or landing page
+  if (pathname.startsWith('/auth') || pathname === '/landing') {
     return null
   }
   

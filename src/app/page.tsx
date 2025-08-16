@@ -14,9 +14,18 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const router = useRouter()
-  const { user: currentUser } = useAuth()
+  const { user: currentUser, isAuthenticated } = useAuth()
+
+  // Redirect unauthenticated users to landing page
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push('/landing')
+    }
+  }, [isAuthenticated, router])
 
   useEffect(() => {
+    if (!isAuthenticated) return
+
     const fetchUsers = async () => {
       try {
         const fetchedUsers = await apiService.getAllUsers()
@@ -31,7 +40,7 @@ export default function Home() {
     }
 
     fetchUsers()
-  }, [currentUser])
+  }, [currentUser, isAuthenticated])
 
   const getInitials = (fullName: string) => {
     return fullName
@@ -73,6 +82,10 @@ export default function Home() {
 
   const handleUserSelect = async (user: User) => {
     await handleMessage(user.username)
+  }
+
+  if (!isAuthenticated) {
+    return null // Will redirect to landing
   }
 
   return (
