@@ -9,13 +9,13 @@ export function Navigation() {
   const { isAuthenticated, user, logout } = useAuth()
   
   const navItems = [
-    { name: 'Home', href: '/' },
+    { name: 'Home', href: '/home' },
     { name: 'Chats', href: '/chats' },
     { name: 'Profile', href: '/profile' }
   ]
 
-  // Don't show navigation on auth pages or landing page
-  if (pathname.startsWith('/auth') || pathname === '/landing') {
+  // Don't show navigation on auth pages or landing page (root)
+  if (pathname.startsWith('/auth') || pathname === '/') {
     return null
   }
   

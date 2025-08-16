@@ -80,7 +80,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     console.log('Logging out...')
     AuthManager.clearAuth()
     setUser(null)
-    router.push('/auth/login')
+    router.push('/')
   }
 
   const isAuthenticated = !!user && AuthManager.isAuthenticated()
