@@ -6,7 +6,6 @@ import Link from 'next/link'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import { apiService } from '@/lib/api'
 
 export default function SignupPage() {
   const [loading, setLoading] = useState(false)

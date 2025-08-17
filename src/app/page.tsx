@@ -2,11 +2,9 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { useRouter } from 'next/navigation'
 
 export default function LandingPage() {
   const [downloading, setDownloading] = useState(false)
-  const router = useRouter()
 
   const handleDownload = async () => {
     setDownloading(true)
@@ -191,6 +189,8 @@ export default function LandingPage() {
               <div className="text-gray-600 text-sm">App Rating</div>
             </div>
           </div>
+        </div>
+        </div>
         </div>
 
       {/* Footer */}
