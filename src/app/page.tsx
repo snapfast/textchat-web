@@ -31,7 +31,7 @@ export default function LandingPage() {
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">T</span>
               </div>
-              <span className="text-gray-900 font-semibold text-xl">TextChat</span>
+              <span className="text-gray-900 font-semibold text-xl">Pokee</span>
             </div>
           </div>
         </div>
@@ -44,7 +44,7 @@ export default function LandingPage() {
           {/* Clean Typography */}
           <div className="space-y-8 mb-16">
             <h1 className="text-5xl md:text-7xl font-bold text-gray-900 tracking-tight">
-              TextChat
+              Pokee
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-600 font-normal max-w-3xl mx-auto leading-relaxed">
@@ -201,7 +201,7 @@ export default function LandingPage() {
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold">T</span>
               </div>
-              <span className="text-gray-900 font-semibold text-xl">TextChat</span>
+              <span className="text-gray-900 font-semibold text-xl">Pokee</span>
             </div>
             <p className="text-gray-600 mb-8 max-w-md mx-auto">
               The future of messaging is here. Join millions who have already upgraded their conversations.
@@ -215,7 +215,7 @@ export default function LandingPage() {
               </Button>
             </div>
             <div className="mt-12 pt-8 border-t border-gray-200 text-gray-500 text-sm">
-              © 2025 TextChat. All rights reserved.
+              © 2025 Pokee. All rights reserved.
             </div>
           </div>
         </div>
