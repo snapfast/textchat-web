@@ -1,76 +1,84 @@
-'use client'
+"use client";
 
-import { useState, useEffect, useRef } from 'react'
-import { apiService } from '@/lib/api'
-import { User } from '@/types'
-import { useAuth } from '@/context/AuthContext'
-import { Input } from '@/components/ui/input'
+import { useState, useEffect, useRef } from "react";
+import { apiService } from "@/lib/api";
+import { User } from "@/types";
+import { useAuth } from "@/context/AuthContext";
+import { Input } from "@/components/ui/input";
 
 interface UserSearchProps {
-  onUserSelect: (user: User) => void
-  placeholder?: string
+  onUserSelect: (user: User) => void;
+  placeholder?: string;
 }
 
-export function UserSearch({ onUserSelect, placeholder = "Search users..." }: UserSearchProps) {
-  const [query, setQuery] = useState('')
-  const [results, setResults] = useState<User[]>([])
-  const [isOpen, setIsOpen] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const { user: currentUser } = useAuth()
-  const searchRef = useRef<HTMLDivElement>(null)
+export function UserSearch({
+  onUserSelect,
+  placeholder = "Search users...",
+}: UserSearchProps) {
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<User[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { user: currentUser } = useAuth();
+  const searchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setIsOpen(false)
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
       }
-    }
+    };
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const searchUsers = async () => {
       if (query.trim().length < 2) {
-        setResults([])
-        setIsOpen(false)
-        return
+        setResults([]);
+        setIsOpen(false);
+        return;
       }
 
-      setLoading(true)
+      setLoading(true);
       try {
-        const searchResults = await apiService.searchUsers(query.trim())
+        const searchResults = await apiService.searchUsers(query.trim());
         // Filter out current user
-        const filteredResults = searchResults.filter(user => user.id !== currentUser?.id)
-        setResults(filteredResults)
-        setIsOpen(true)
+        const filteredResults = searchResults.filter(
+          (user) => user.id !== currentUser?.id,
+        );
+        setResults(filteredResults);
+        setIsOpen(true);
       } catch (error) {
-        console.error('Search failed:', error)
-        setResults([])
+        console.error("Search failed:", error);
+        setResults([]);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    const debounceTimer = setTimeout(searchUsers, 300)
-    return () => clearTimeout(debounceTimer)
-  }, [query, currentUser])
+    const debounceTimer = setTimeout(searchUsers, 300);
+    return () => clearTimeout(debounceTimer);
+  }, [query, currentUser]);
 
   const handleUserSelect = (user: User) => {
-    setQuery('')
-    setResults([])
-    setIsOpen(false)
-    onUserSelect(user)
-  }
+    setQuery("");
+    setResults([]);
+    setIsOpen(false);
+    onUserSelect(user);
+  };
 
   const getInitials = (fullName: string) => {
     return fullName
-      .split(' ')
-      .map(name => name.charAt(0).toUpperCase())
-      .join('')
-      .slice(0, 2)
-  }
+      .split(" ")
+      .map((name) => name.charAt(0).toUpperCase())
+      .join("")
+      .slice(0, 2);
+  };
 
   return (
     <div ref={searchRef} className="relative">
@@ -83,8 +91,18 @@ export function UserSearch({ onUserSelect, placeholder = "Search users..." }: Us
           className="w-full pl-10 pr-4"
         />
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          <svg
+            className="h-5 w-5 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
           </svg>
         </div>
         {loading && (
@@ -113,14 +131,20 @@ export function UserSearch({ onUserSelect, placeholder = "Search users..." }: Us
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-gray-900 truncate">{user.full_name}</p>
-                    <p className="text-sm text-gray-600 truncate">@{user.username}</p>
+                    <p className="text-sm font-semibold text-gray-900 truncate">
+                      {user.full_name}
+                    </p>
+                    <p className="text-sm text-gray-600 truncate">
+                      @{user.username}
+                    </p>
                     {user.bio && (
-                      <p className="text-xs text-gray-500 truncate mt-1">{user.bio}</p>
+                      <p className="text-xs text-gray-500 truncate mt-1">
+                        {user.bio}
+                      </p>
                     )}
                   </div>
                   <div className="text-xs text-gray-400">
-                    {user.is_online ? 'Online' : 'Offline'}
+                    {user.is_online ? "Online" : "Offline"}
                   </div>
                 </div>
               </button>
@@ -133,5 +157,5 @@ export function UserSearch({ onUserSelect, placeholder = "Search users..." }: Us
         </div>
       )}
     </div>
-  )
+  );
 }

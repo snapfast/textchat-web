@@ -1,15 +1,15 @@
-'use client'
+"use client";
 
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function AuthRedirectPage() {
-  const router = useRouter()
-  
+  const router = useRouter();
+
   useEffect(() => {
     // Redirect to login page
-    router.replace('/auth/login')
-  }, [router])
+    router.replace("/auth/login");
+  }, [router]);
 
   return (
     <div className="min-h-screen flex items-center justify-center">
@@ -18,5 +18,5 @@ export default function AuthRedirectPage() {
         <p className="text-gray-600">Redirecting to login...</p>
       </div>
     </div>
-  )
+  );
 }

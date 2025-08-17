@@ -1,24 +1,24 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { useAuth } from '@/context/AuthContext'
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 export function Navigation() {
-  const pathname = usePathname()
-  const { isAuthenticated, user, logout } = useAuth()
-  
+  const pathname = usePathname();
+  const { isAuthenticated, user, logout } = useAuth();
+
   const navItems = [
-    { name: 'Home', href: '/home' },
-    { name: 'Chats', href: '/chats' },
-    { name: 'Profile', href: '/profile' }
-  ]
+    { name: "Home", href: "/home" },
+    { name: "Chats", href: "/chats" },
+    { name: "Profile", href: "/profile" },
+  ];
 
   // Don't show navigation on auth pages or landing page (root)
-  if (pathname.startsWith('/auth') || pathname === '/') {
-    return null
+  if (pathname.startsWith("/auth") || pathname === "/") {
+    return null;
   }
-  
+
   return (
     <nav className="border-b border-gray-200">
       <div className="container mx-auto px-4">
@@ -30,15 +30,15 @@ export function Navigation() {
                 href={item.href}
                 className={`py-4 px-2 border-b-2 font-medium text-sm ${
                   pathname === item.href
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? "border-blue-500 text-blue-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`}
               >
                 {item.name}
               </Link>
             ))}
           </div>
-          
+
           <div className="flex items-center space-x-4">
             {isAuthenticated ? (
               <>
@@ -64,5 +64,5 @@ export function Navigation() {
         </div>
       </div>
     </nav>
-  )
+  );
 }

@@ -28,7 +28,11 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" href="/whatsapp-logo.svg" type="image/svg+xml" />
-        <link rel="shortcut icon" href="/whatsapp-logo.svg" type="image/svg+xml" />
+        <link
+          rel="shortcut icon"
+          href="/whatsapp-logo.svg"
+          type="image/svg+xml"
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

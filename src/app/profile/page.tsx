@@ -1,105 +1,107 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { ProtectedRoute } from '@/components/ProtectedRoute'
-import { apiService } from '@/lib/api'
-import { User } from '@/types'
-import { useAuth } from '@/context/AuthContext'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
+import { useState, useEffect } from "react";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { apiService } from "@/lib/api";
+import { User } from "@/types";
+import { useAuth } from "@/context/AuthContext";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function ProfilePage() {
-  const [isEditing, setIsEditing] = useState(false)
-  const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
-  const { user: currentUser, login } = useAuth()
-  const [profile, setProfile] = useState<User | null>(null)
+  const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const { user: currentUser, login } = useAuth();
+  const [profile, setProfile] = useState<User | null>(null);
   const [editForm, setEditForm] = useState({
-    full_name: '',
-    bio: ''
-  })
+    full_name: "",
+    bio: "",
+  });
 
   useEffect(() => {
     const fetchProfile = async () => {
-      if (!currentUser?.username) return
-      
+      if (!currentUser?.username) return;
+
       try {
-        const userProfile = await apiService.getUserProfile(currentUser.username)
-        setProfile(userProfile)
+        const userProfile = await apiService.getUserProfile(
+          currentUser.username,
+        );
+        setProfile(userProfile);
         setEditForm({
           full_name: userProfile.full_name,
-          bio: userProfile.bio || ''
-        })
+          bio: userProfile.bio || "",
+        });
       } catch (err: unknown) {
-        setError(err instanceof Error ? err.message : 'An error occurred')
+        setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchProfile()
-  }, [currentUser])
+    fetchProfile();
+  }, [currentUser]);
 
   const handleSave = async () => {
-    if (!profile?.username) return
-    
-    setSaving(true)
-    setError('')
-    setSuccess('')
-    
+    if (!profile?.username) return;
+
+    setSaving(true);
+    setError("");
+    setSuccess("");
+
     try {
       const updatedUser = await apiService.updateUserProfile(profile.username, {
         full_name: editForm.full_name,
-        bio: editForm.bio
-      })
-      
-      setProfile(updatedUser)
-      setIsEditing(false)
-      setSuccess('Profile updated successfully!')
-      
+        bio: editForm.bio,
+      });
+
+      setProfile(updatedUser);
+      setIsEditing(false);
+      setSuccess("Profile updated successfully!");
+
       // Update user in auth context
-      const token = localStorage.getItem('token')
+      const token = localStorage.getItem("token");
       if (token) {
-        login(token, updatedUser)
+        login(token, updatedUser);
       }
-      
-      setTimeout(() => setSuccess(''), 3000)
+
+      setTimeout(() => setSuccess(""), 3000);
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'An error occurred')
+      setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
-  }
+  };
 
   const handleCancel = () => {
     if (profile) {
       setEditForm({
         full_name: profile.full_name,
-        bio: profile.bio || ''
-      })
+        bio: profile.bio || "",
+      });
     }
-    setIsEditing(false)
-    setError('')
-  }
+    setIsEditing(false);
+    setError("");
+  };
 
   const getInitials = (fullName: string) => {
     return fullName
-      .split(' ')
-      .map(name => name.charAt(0).toUpperCase())
-      .join('')
-      .slice(0, 2)
-  }
+      .split(" ")
+      .map((name) => name.charAt(0).toUpperCase())
+      .join("")
+      .slice(0, 2);
+  };
 
   const formatJoinDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long'
-    })
-  }
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+    });
+  };
 
   if (loading) {
     return (
@@ -110,7 +112,7 @@ export default function ProfilePage() {
           </div>
         </div>
       </ProtectedRoute>
-    )
+    );
   }
 
   if (!profile) {
@@ -122,7 +124,7 @@ export default function ProfilePage() {
           </div>
         </div>
       </ProtectedRoute>
-    )
+    );
   }
 
   return (
@@ -134,36 +136,44 @@ export default function ProfilePage() {
               <div className="text-sm text-red-600">{error}</div>
             </div>
           )}
-          
+
           {success && (
             <div className="bg-green-50 border border-green-200 rounded-md p-4 mb-6">
               <div className="text-sm text-green-600">{success}</div>
             </div>
           )}
-          
+
           <div className="text-center mb-8">
             <div className="relative inline-block">
               <div className="w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-4xl font-bold mx-auto mb-4">
                 {getInitials(profile.full_name)}
               </div>
             </div>
-            
+
             <div className="flex items-center justify-center space-x-4">
-              <h1 className="text-3xl font-bold text-gray-900">{profile.full_name}</h1>
-              <div className={`w-3 h-3 ${profile.is_online ? 'bg-green-500' : 'bg-gray-500'} rounded-full`}></div>
+              <h1 className="text-3xl font-bold text-gray-900">
+                {profile.full_name}
+              </h1>
+              <div
+                className={`w-3 h-3 ${profile.is_online ? "bg-green-500" : "bg-gray-500"} rounded-full`}
+              ></div>
             </div>
             <p className="text-gray-600 mt-2">@{profile.username}</p>
-            <p className="text-gray-500 text-sm mt-1">{profile.is_online ? 'Online' : 'Offline'}</p>
+            <p className="text-gray-500 text-sm mt-1">
+              {profile.is_online ? "Online" : "Offline"}
+            </p>
           </div>
-          
+
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div className="border rounded-lg p-4">
                   <div className="flex justify-between items-center mb-2">
-                    <h3 className="font-semibold text-gray-900">Personal Info</h3>
+                    <h3 className="font-semibold text-gray-900">
+                      Personal Info
+                    </h3>
                     {!isEditing && (
-                      <button 
+                      <button
                         onClick={() => setIsEditing(true)}
                         className="text-blue-600 hover:text-blue-700 text-sm font-medium"
                       >
@@ -171,70 +181,86 @@ export default function ProfilePage() {
                       </button>
                     )}
                   </div>
-                  
+
                   <div className="space-y-3">
                     <div>
-                      <Label className="text-sm font-medium text-muted-foreground">Full Name</Label>
+                      <Label className="text-sm font-medium text-muted-foreground">
+                        Full Name
+                      </Label>
                       {isEditing ? (
-                        <Input 
-                          type="text" 
+                        <Input
+                          type="text"
                           value={editForm.full_name}
-                          onChange={(e) => setEditForm({...editForm, full_name: e.target.value})}
+                          onChange={(e) =>
+                            setEditForm({
+                              ...editForm,
+                              full_name: e.target.value,
+                            })
+                          }
                         />
                       ) : (
                         <p className="text-gray-900">{profile.full_name}</p>
                       )}
                     </div>
-                    
+
                     <div>
-                      <Label className="text-sm font-medium text-muted-foreground">Username</Label>
+                      <Label className="text-sm font-medium text-muted-foreground">
+                        Username
+                      </Label>
                       <p className="text-gray-900">@{profile.username}</p>
                     </div>
-                    
+
                     <div>
-                      <Label className="text-sm font-medium text-muted-foreground">Email</Label>
+                      <Label className="text-sm font-medium text-muted-foreground">
+                        Email
+                      </Label>
                       <p className="text-gray-900">{profile.email}</p>
                     </div>
                   </div>
                 </div>
               </div>
-              
+
               <div className="space-y-4">
                 <div className="border rounded-lg p-4">
                   <h3 className="font-semibold text-gray-900 mb-2">About</h3>
                   {isEditing ? (
-                    <Textarea 
+                    <Textarea
                       value={editForm.bio}
-                      onChange={(e) => setEditForm({...editForm, bio: e.target.value})}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, bio: e.target.value })
+                      }
                       rows={4}
                       placeholder="Tell others about yourself..."
                     />
                   ) : (
-                    <p className="text-gray-600">{profile.bio || "No bio yet"}</p>
+                    <p className="text-gray-600">
+                      {profile.bio || "No bio yet"}
+                    </p>
                   )}
                 </div>
-                
+
                 <div className="border rounded-lg p-4">
-                  <h3 className="font-semibold text-gray-900 mb-2">Member Since</h3>
-                  <p className="text-gray-600">{formatJoinDate(profile.created_at)}</p>
+                  <h3 className="font-semibold text-gray-900 mb-2">
+                    Member Since
+                  </h3>
+                  <p className="text-gray-600">
+                    {formatJoinDate(profile.created_at)}
+                  </p>
                 </div>
               </div>
             </div>
-            
+
             {isEditing && (
               <div className="flex justify-end space-x-3 pt-4 border-t">
-                <Button 
+                <Button
                   onClick={handleCancel}
                   disabled={saving}
                   variant="outline"
                 >
                   Cancel
                 </Button>
-                <Button 
-                  onClick={handleSave}
-                  disabled={saving}
-                >
-                  {saving ? 'Saving...' : 'Save Changes'}
+                <Button onClick={handleSave} disabled={saving}>
+                  {saving ? "Saving..." : "Save Changes"}
                 </Button>
               </div>
             )}
@@ -242,5 +268,5 @@ export default function ProfilePage() {
         </div>
       </div>
     </ProtectedRoute>
-  )
+  );
 }
